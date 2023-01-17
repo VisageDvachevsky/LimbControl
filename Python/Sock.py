@@ -1,3 +1,8 @@
+"""
+{ send coordinates to unity }
+
+the function will be written after adding asynchrony
+"""
 import socket
 
 sock = socket.socket()
