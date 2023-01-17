@@ -29,14 +29,14 @@ Camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 def VideoCoordintations(VideoArray, SampleVideo):
     """
-    { conclusion coordinaiton from video }
+    { conclusion coordinates from video }
 
     :param      VideoArray:   The video array
     :type       VideoArray:   { List }
     :param      SampleVideo:  The sample video
     :type       SampleVideo:  { cv2 video }
 
-    :returns:   { return list with video coordinations }
+    :returns:   { return list with video coordinates }
     :rtype:     { array }
     """
     # check video state
@@ -69,14 +69,14 @@ def VideoCoordintations(VideoArray, SampleVideo):
 
 def CameraCoordinations(CameraArray, WebCam):
     """
-    { conclution coordinations from camera }
+    { conclution coordinates from camera }
 
     :param      CameraArray:  The camera array
     :type       CameraArray:  { list }
     :param      WebCam:       The web camera
     :type       WebCam:       { cv2 camera }
 
-    :returns:   { return list with camera coordinations }
+    :returns:   { return list with camera coordinates }
     :rtype:     { array }
     """
     # fps config
@@ -129,13 +129,13 @@ if __name__ == '__main__':
     integerCamer_XYZ = []
     integerVideo_XYZ = []
 
-    # video coordination( X, Y, Z) to int type
+    # video coordinates( X, Y, Z) to int type
     for element in VideoCoordintations(VideoData, Video):
         Video_XYZ = element.split(',')
         for elem in Video_XYZ:
             integerVideo_XYZ.append(float(elem))
 
-    # camera coordination( X, Y, Z) to int type
+    # camera coordinates( X, Y, Z) to int type
     for item in CameraCoordinations(CameraData, Camera):
         Camera_XYZ = item.split(',')
         for elem in Camera_XYZ:
@@ -145,5 +145,5 @@ if __name__ == '__main__':
     Similarity = math.sqrt((integerVideo_XYZ[0] - integerCamer_XYZ[0])**2 +
                            (integerVideo_XYZ[1] - integerCamer_XYZ[1])**2 +
                            (integerVideo_XYZ[2] - integerCamer_XYZ[2]) ** 2)
-
+    
     print(f'Аккуратность повторения движений: {Similarity}')
