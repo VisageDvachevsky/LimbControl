@@ -10,7 +10,7 @@ VideoData = []
 CameraData = []
 
 # get image
-Video = cv2.VideoCapture('test_video.mp4')
+Video = cv2.VideoCapture('../Test Video/test_video.mp4')
 Camera = cv2.VideoCapture(0)
 
 # Tracking/Pose Settings
