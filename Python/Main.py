@@ -112,7 +112,7 @@ if __name__ == '__main__':
         for elem in Camera_XYZ:
             integerCamer_XYZ.append(float(elem))
 
-    Similarity = math.sqrt((integerVideo_XYZ[0]-integerCamer_XYZ[0])**2+
-        (integerVideo_XYZ[1]-integerCamer_XYZ[1])**2+
-        (integerVideo_XYZ[2]-integerCamer_XYZ[2]) **2)
+    Similarity = math.sqrt((integerVideo_XYZ[0]-integerCamer_XYZ[0])**2 +
+                           (integerVideo_XYZ[1]-integerCamer_XYZ[1])**2 +
+                           (integerVideo_XYZ[2]-integerCamer_XYZ[2]) ** 2)
     print(f'Аккуратность повторения движений: {Similarity}')
