@@ -57,7 +57,7 @@ def VideoCoordintations(VideoArray, SampleVideo):
             cv2.imshow("VideoTrack", frame)
 
         except Exception as ex:
-            print(ex)
+            print(str(ex))
             break
         if(cv2.waitKey(1) == ord('q')):
             return VideoArray
@@ -117,7 +117,7 @@ def CameraCoordinations(CameraArray, WebCam):
             cv2.imshow("CameraTrack", image)
 
         except Exception as ex:
-            print(ex)
+            print(str(ex))
             break
         if(cv2.waitKey(1) == ord('w')):
             return CameraArray
