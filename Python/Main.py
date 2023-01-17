@@ -28,16 +28,29 @@ Camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 
 def VideoCoordintations(VideoArray, SampleVideo):
+    """
+    { conclusion coordinaiton from video }
+
+    :param      VideoArray:   The video array
+    :type       VideoArray:   { List }
+    :param      SampleVideo:  The sample video
+    :type       SampleVideo:  { cv2 video }
+
+    :returns:   { return list with video coordinations }
+    :rtype:     { array }
+    """
+    # check video state
     while Video.isOpened():
         _, frame = Video.read()
         try:
+            # change video size
             frame = cv2.resize(frame, (1280, 720))
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             results = pose.process(frame_rgb)
             mp_drawing.draw_landmarks(
                 frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
-
+            # parse landmarks
             if results.pose_world_landmarks:
                 for l in results.pose_world_landmarks.landmark:
                     VideoArray += [f'{l.x},{-l.y},{l.z}']
@@ -55,8 +68,21 @@ def VideoCoordintations(VideoArray, SampleVideo):
 
 
 def CameraCoordinations(CameraArray, WebCam):
+    """
+    { conclution coordinations from camera }
+
+    :param      CameraArray:  The camera array
+    :type       CameraArray:  { list }
+    :param      WebCam:       The web camera
+    :type       WebCam:       { cv2 camera }
+
+    :returns:   { return list with camera coordinations }
+    :rtype:     { array }
+    """
+    # fps config
     new_frame_time = 0
     prev_frame_time = 0
+    # check camera state
     while WebCam.isOpened():
         succes, image = WebCam.read()
         if not succes:
@@ -64,6 +90,7 @@ def CameraCoordinations(CameraArray, WebCam):
             continue
 
         try:
+            # tracking settings
             image.flags.writeable = False
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             results = pose.process(image)
@@ -74,17 +101,17 @@ def CameraCoordinations(CameraArray, WebCam):
                 results.pose_landmarks,
                 mp_pose.POSE_CONNECTIONS,
                 landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
-
+            # fps settings
             font = cv2.FONT_HERSHEY_SIMPLEX
 
             new_frame_time = time.time()
-            fps = 1/(new_frame_time-prev_frame_time)
+            fps = 1 / (new_frame_time - prev_frame_time)
             prev_frame_time = new_frame_time
             fps = int(fps)
             fps = str(fps)
             cv2.putText(image, fps, (7, 70), font, 3,
                         (100, 255, 0), 3, cv2.LINE_AA)
-
+            # parse landmarks
             if results.pose_world_landmarks:
                 for l in results.pose_world_landmarks.landmark:
                     CameraArray += [f'{l.x},{-l.y},{l.z}']
@@ -102,17 +129,21 @@ if __name__ == '__main__':
     integerCamer_XYZ = []
     integerVideo_XYZ = []
 
+    # video coordination( X, Y, Z) to int type
     for element in VideoCoordintations(VideoData, Video):
         Video_XYZ = element.split(',')
         for elem in Video_XYZ:
             integerVideo_XYZ.append(float(elem))
 
+    # camera coordination( X, Y, Z) to int type
     for item in CameraCoordinations(CameraData, Camera):
         Camera_XYZ = item.split(',')
         for elem in Camera_XYZ:
             integerCamer_XYZ.append(float(elem))
 
-    Similarity = math.sqrt((integerVideo_XYZ[0]-integerCamer_XYZ[0])**2 +
-                           (integerVideo_XYZ[1]-integerCamer_XYZ[1])**2 +
-                           (integerVideo_XYZ[2]-integerCamer_XYZ[2]) ** 2)
+    # accuracy formula
+    Similarity = math.sqrt((integerVideo_XYZ[0] - integerCamer_XYZ[0])**2 +
+                           (integerVideo_XYZ[1] - integerCamer_XYZ[1])**2 +
+                           (integerVideo_XYZ[2] - integerCamer_XYZ[2]) ** 2)
+
     print(f'Аккуратность повторения движений: {Similarity}')
