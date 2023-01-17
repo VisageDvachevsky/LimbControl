@@ -1,7 +1,8 @@
 import time
+# default library
 import threading as th
 import math
-
+# custom library
 import cv2
 import mediapipe as mp
 
@@ -25,8 +26,6 @@ Camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 Camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 # Some functions
-
-
 def VideoCoordintations(VideoArray, SampleVideo):
     """
     { conclusion coordinates from video }
