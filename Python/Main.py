@@ -1,7 +1,7 @@
 # default library
 import time
 from threading import Thread
-import math
+
 # custom library
 import cv2
 import mediapipe as mp
@@ -22,8 +22,8 @@ pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 
 # Camera settings
 Camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 3)
-Camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-Camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+Camera.set(cv2.CAP_PROP_FRAME_WIDTH, 854)
+Camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 # Threading return class
 class ThreadWithReturnValue(Thread):
@@ -61,7 +61,7 @@ def VideoCoordintations(VideoArray, SampleVideo):
         _, frame = Video.read()
         try:
             # change video size
-            frame = cv2.resize(frame, (1280, 720))
+            frame = cv2.resize(frame, (854, 480))
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             results = pose.process(frame_rgb)
@@ -77,7 +77,7 @@ def VideoCoordintations(VideoArray, SampleVideo):
         except Exception as ex:
             print(str(ex))
             break
-        if(cv2.waitKey(1) == ord('q')):
+        if(cv2.waitKey(1) == ord('w')):
             return VideoArray
             break
 
@@ -143,31 +143,9 @@ def CameraCoordinations(CameraArray, WebCam):
 
 
 if __name__ == '__main__':
-    integerCamer_XYZ = []
-    integerVideo_XYZ = []
-
     # Thread object
     twrv = ThreadWithReturnValue(target=VideoCoordintations, args=(VideoData, Video,))
     twrv1 = ThreadWithReturnValue(target=CameraCoordinations, args=(CameraData, Camera,))
     # Thread Start
     twrv.start()
     twrv1.start()
-
-    #  video coordinates(X, Y, Z) to int type
-    for element in twrv.join():
-        Video_XYZ = element.split(',')
-        for elem in Video_XYZ:
-            integerVideo_XYZ.append(float(elem))
-
-    # camera coordinates( X, Y, Z) to int type
-    for item in twrv1.join():
-        Camera_XYZ = item.split(',')
-        for elem in Camera_XYZ:
-            integerCamer_XYZ.append(float(elem))
-
-    # accuracy formula
-    Similarity = math.sqrt((integerVideo_XYZ[0] - integerCamer_XYZ[0])**2 +
-                           (integerVideo_XYZ[1] - integerCamer_XYZ[1])**2 +
-                           (integerVideo_XYZ[2] - integerCamer_XYZ[2]) ** 2)
-
-    print(f'Аккуратность повторения движений: {Similarity}')
