@@ -1,6 +1,6 @@
 # default library
 import time
-import threading as th
+from threading import Thread
 import math
 # custom library
 import cv2
@@ -25,7 +25,25 @@ Camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 3)
 Camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 Camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
+# Threading return class
+class ThreadWithReturnValue(Thread):
+    
+    def __init__(self, group=None, target=None, name=None,
+                 args=(), kwargs={}, Verbose=None):
+        Thread.__init__(self, group, target, name, args, kwargs)
+        self._return = None
+
+    def run(self):
+        if self._target is not None:
+            self._return = self._target(*self._args,
+                                                **self._kwargs)
+    def join(self, *args):
+        Thread.join(self, *args)
+        return self._return
+
 # Some functions
+
+
 def VideoCoordintations(VideoArray, SampleVideo):
     """
     { conclusion coordinates from video }
@@ -128,14 +146,21 @@ if __name__ == '__main__':
     integerCamer_XYZ = []
     integerVideo_XYZ = []
 
-    # video coordinates( X, Y, Z) to int type
-    for element in VideoCoordintations(VideoData, Video):
+    # Thread object
+    twrv = ThreadWithReturnValue(target=VideoCoordintations, args=(VideoData, Video,))
+    twrv1 = ThreadWithReturnValue(target=CameraCoordinations, args=(CameraData, Camera,))
+    # Thread Start
+    twrv.start()
+    twrv1.start()
+
+    #  video coordinates(X, Y, Z) to int type
+    for element in twrv.join():
         Video_XYZ = element.split(',')
         for elem in Video_XYZ:
             integerVideo_XYZ.append(float(elem))
 
     # camera coordinates( X, Y, Z) to int type
-    for item in CameraCoordinations(CameraData, Camera):
+    for item in twrv1.join():
         Camera_XYZ = item.split(',')
         for elem in Camera_XYZ:
             integerCamer_XYZ.append(float(elem))
@@ -144,5 +169,5 @@ if __name__ == '__main__':
     Similarity = math.sqrt((integerVideo_XYZ[0] - integerCamer_XYZ[0])**2 +
                            (integerVideo_XYZ[1] - integerCamer_XYZ[1])**2 +
                            (integerVideo_XYZ[2] - integerCamer_XYZ[2]) ** 2)
-    
+
     print(f'Аккуратность повторения движений: {Similarity}')
