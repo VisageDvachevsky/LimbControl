@@ -48,18 +48,14 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             VideoArr = VideoArr[:min_length]
 
         distance = 0
-        percent = 0
         for i in range(len(CameraArr)):
             x1, y1, z1 = CameraArr[i]
             x2, y2, z2 = VideoArr[i]
             distance += math.sqrt((x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2)
-            percent = (1 - (distance / 100)) * 100
-
 
         flipped_image = cv2.flip(image, 1)
         flipped_image = cv2.cvtColor(flipped_image, cv2.COLOR_RGB2BGR)
-        print(distance)
-        cv2.putText(flipped_image, f"Accuracy in percent: {percent:.1f}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv2.putText(flipped_image, f"Distance: {distance:.0f}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
         cv2.imshow('MediaPipe Pose', flipped_image)        
         if cv2.waitKey(1) & 0xFF == ord('q'):
