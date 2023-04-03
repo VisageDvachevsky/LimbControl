@@ -8,6 +8,8 @@ mp_pose = mp.solutions.pose
 cap = cv2.VideoCapture(0)
 
 video = cv2.VideoCapture('../Test Video/test_video.mp4')
+CameraArr = []
+VideoArr = []
 
 with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
     while True:
@@ -31,8 +33,7 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
         mp_drawing.draw_landmarks(image_v, results_v.pose_landmarks, mp_pose.POSE_CONNECTIONS)
 
-        CameraArr = []
-        VideoArr = []
+        
 
         if results.pose_landmarks is not None:
             for i, landmark in enumerate(results.pose_landmarks.landmark):
