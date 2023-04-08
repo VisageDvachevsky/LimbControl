@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\TCPTestClient.cs" />
+    <Compile Include="Assets\Zone.cs" />
     <Compile Include="Assets\LandmarkVisualizer.cs" />
   </ItemGroup>
   <ItemGroup>

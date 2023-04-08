@@ -347,6 +347,7 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/LandmarkVisualizer.cs"
 "Assets/TCPTestClient.cs"
+"Assets/Zone.cs"
 -langversion:9.0
 
 /deterministic

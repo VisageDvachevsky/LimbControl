@@ -8,6 +8,7 @@ public class LandmarkVisualizer : MonoBehaviour
     [Header("Включите отображение gizmos")]
     [SerializeField] private TCPTestClient _client;
     [SerializeField] private float _scale = 1f;
+    public GameObject _Obj;
 
     private void OnDrawGizmos()
     {
@@ -15,9 +16,12 @@ public class LandmarkVisualizer : MonoBehaviour
         {
             foreach (var l in _client.Landmarks)
             {
-                Gizmos.color = new Color(l.Visibility, l.Visibility, l.Visibility);
-                Gizmos.DrawSphere(l.Position * _scale, 0.5f);
+                _Obj.gameObject.tag = "Object";
+                _Obj.transform.position = l.Position * _scale;
             }
         }
     }
+
+    
+
 }

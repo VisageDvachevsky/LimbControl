@@ -1,6 +1,3 @@
-// This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. 
-// To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/ 
-// or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
+using System.Diagnostics;
 
 public struct LandmarkInfo
 {
@@ -21,12 +19,11 @@ struct ServerData
 
 	public LandmarkInfo[] ParseLandmarks()
     {
-		if (data.Length % 4 != 0) throw new InvalidOperationException("Invalid server data!");
-		LandmarkInfo[] info = new LandmarkInfo[data.Length / 4];
-		for (int i = 0; i < data.Length; i+=4)
+		if (data.Length % 3 != 0) throw new InvalidOperationException("Invalid server data!");
+		LandmarkInfo[] info = new LandmarkInfo[data.Length / 3];
+		for (int i = 0; i < data.Length; i+=3)
         {
-			info[i / 4].Position = new Vector3(data[i], data[i + 1], data[i + 2]);
-			info[i / 4].Visibility = data[i + 3];
+			info[i / 3].Position = new Vector3(data[i], data[i + 1], data[i + 2]);
         }
 
 		return info;
@@ -37,6 +34,7 @@ struct ServerData
 public class TCPTestClient : MonoBehaviour {
     private const string Hostname = "localhost";
     private const int Port = 9090;
+
     #region private members 	
     private TcpClient socketConnection; 	
 	private Thread clientReceiveThread;
@@ -49,11 +47,14 @@ public class TCPTestClient : MonoBehaviour {
 
 	public LandmarkInfo[] Landmarks;
 
-	// Use this for initialization 	
+	private Thread pythonThread;
+
 	void Start () {
+		pythonThread = new Thread(StartPythonScript);
+		pythonThread.Start();
 		ConnectToTcpServer();     
 	}  	
-	// Update is called once per frame
+
 	void Update () {         
 		
 		if (!dataHandled)
@@ -67,9 +68,7 @@ public class TCPTestClient : MonoBehaviour {
     {
 		isWorking = false;
     }
-    /// <summary> 	
-    /// Setup socket connection. 	
-    /// </summary> 	
+
     private void ConnectToTcpServer () { 		
 		try {  			
 			clientReceiveThread = new Thread (new ThreadStart(ListenForData)); 
@@ -77,8 +76,8 @@ public class TCPTestClient : MonoBehaviour {
 			isWorking = true;
 			clientReceiveThread.Start();  		
 		} 		
-		catch (Exception e) { 			
-			Debug.Log("On client connect exception " + e); 		
+		catch (Exception e) {
+            UnityEngine.Debug.Log("On client connect exception " + e); 		
 		} 	
 	}  	
 	/// <summary> 	
@@ -112,8 +111,8 @@ public class TCPTestClient : MonoBehaviour {
 			}
 			socketConnection.Close();
 		}         
-		catch (SocketException socketException) {             
-			Debug.Log("Socket exception: " + socketException);         
+		catch (SocketException socketException) {
+			UnityEngine.Debug.Log("Socket exception: " + socketException);         
 		}     
 	}  	
 	/// <summary> 	
@@ -131,12 +130,31 @@ public class TCPTestClient : MonoBehaviour {
 				// Convert string message to byte array.                 
 				byte[] clientMessageAsByteArray = Encoding.ASCII.GetBytes(clientMessage); 				
 				// Write byte array to socketConnection stream.                 
-				stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);                 
-				Debug.Log("Client sent his message - should be received by server");             
+				stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
+				UnityEngine.Debug.Log("Client sent his message - should be received by server");             
 			}         
 		} 		
-		catch (SocketException socketException) {             
-			Debug.Log("Socket exception: " + socketException);         
+		catch (SocketException socketException) {
+			UnityEngine.Debug.Log("Socket exception: " + socketException);         
 		}     
-	} 
+	}
+
+    private void OnApplicationQuit()
+    {
+        pythonThread.Abort();
+    }
+
+    private void StartPythonScript()
+	{
+		ProcessStartInfo startInfo = new ProcessStartInfo();
+		startInfo.FileName = "python";
+		startInfo.Arguments = @"C:\Users\Ya\Documents\GitHub\My-Just-Dance\Python\Main.py";
+		startInfo.UseShellExecute = false;
+		startInfo.RedirectStandardOutput = true;
+		Process process = new Process();
+		process.StartInfo = startInfo;
+		process.Start();
+		string output = process.StandardOutput.ReadToEnd();
+		process.WaitForExit();
+	}
 }
