@@ -56,7 +56,9 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\FingerController.cs" />
     <Compile Include="Assets\TCPTestClient.cs" />
+    <Compile Include="Assets\PythonTread.cs" />
     <Compile Include="Assets\Zone.cs" />
     <Compile Include="Assets\LandmarkVisualizer.cs" />
   </ItemGroup>

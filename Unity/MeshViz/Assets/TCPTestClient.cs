@@ -34,6 +34,7 @@ struct ServerData
 public class TCPTestClient : MonoBehaviour {
     private const string Hostname = "localhost";
     private const int Port = 9090;
+    private const string V = @"C:\Users\Ya\AppData\Local\Programs\Python\Python310\python.exe";
 
     #region private members 	
     private TcpClient socketConnection; 	
@@ -47,16 +48,24 @@ public class TCPTestClient : MonoBehaviour {
 
 	public LandmarkInfo[] Landmarks;
 
-	private Thread pythonThread;
+	
 
 	void Start () {
-		pythonThread = new Thread(StartPythonScript);
-		pythonThread.Start();
+		ProcessStartInfo startInfo = new ProcessStartInfo();
+        startInfo.FileName = V;
+		startInfo.Arguments = @"cd C:\Users\Ya\Desktop\ûûûû\python3 main.py";
+		startInfo.UseShellExecute = false;
+
+		Process process = new Process();
+		process.StartInfo = startInfo;
+		process.Start();
+        process.WaitForExit();
+
+
 		ConnectToTcpServer();     
 	}  	
 
-	void Update () {         
-		
+	void Update () {
 		if (!dataHandled)
         {
 			Landmarks = serverData.ParseLandmarks();
@@ -69,7 +78,12 @@ public class TCPTestClient : MonoBehaviour {
 		isWorking = false;
     }
 
-    private void ConnectToTcpServer () { 		
+    private void ConnectToTcpServer () {
+
+        Thread.Sleep(20000);
+		print("123");
+
+
 		try {  			
 			clientReceiveThread = new Thread (new ThreadStart(ListenForData)); 
 			clientReceiveThread.IsBackground = true;
@@ -139,22 +153,5 @@ public class TCPTestClient : MonoBehaviour {
 		}     
 	}
 
-    private void OnApplicationQuit()
-    {
-        pythonThread.Abort();
-    }
-
-    private void StartPythonScript()
-	{
-		ProcessStartInfo startInfo = new ProcessStartInfo();
-		startInfo.FileName = "python";
-		startInfo.Arguments = @"C:\Users\Ya\Documents\GitHub\My-Just-Dance\Python\Main.py";
-		startInfo.UseShellExecute = false;
-		startInfo.RedirectStandardOutput = true;
-		Process process = new Process();
-		process.StartInfo = startInfo;
-		process.Start();
-		string output = process.StandardOutput.ReadToEnd();
-		process.WaitForExit();
-	}
+    
 }
