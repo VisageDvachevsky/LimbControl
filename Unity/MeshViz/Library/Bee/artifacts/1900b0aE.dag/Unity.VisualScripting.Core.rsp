@@ -329,6 +329,7 @@
 -r:"C:/Users/Ya/Documents/GitHub/My-Just-Dance/Unity/MeshViz/Library/PackageCache/com.unity.collab-proxy@2.0.1/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll"
 -r:"C:/Users/Ya/Documents/GitHub/My-Just-Dance/Unity/MeshViz/Library/PackageCache/com.unity.collab-proxy@2.0.1/Lib/Editor/PlasticSCM/Unity.Plastic.Newtonsoft.Json.dll"
 -r:"C:/Users/Ya/Documents/GitHub/My-Just-Dance/Unity/MeshViz/Library/PackageCache/com.unity.collab-proxy@2.0.1/Lib/Editor/PlasticSCM/unityplastic.dll"
+-r:"C:/Users/Ya/Documents/GitHub/My-Just-Dance/Unity/MeshViz/Library/PackageCache/com.unity.nuget.newtonsoft-json@3.2.0/Runtime/Newtonsoft.Json.dll"
 -r:"C:/Users/Ya/Documents/GitHub/My-Just-Dance/Unity/MeshViz/Library/PackageCache/com.unity.testtools.codecoverage@1.2.2/lib/ReportGenerator/ReportGeneratorMerged.dll"
 -r:"C:/Users/Ya/Documents/GitHub/My-Just-Dance/Unity/MeshViz/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll"
 -r:"C:/Users/Ya/Documents/GitHub/My-Just-Dance/Unity/MeshViz/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll"

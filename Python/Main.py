@@ -52,7 +52,7 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         for i in range(len(CameraArr)):
             x1, y1, z1 = CameraArr[i]
             x2, y2, z2 = VideoArr[i]
-            distance += math.sqrt((x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2)
+            distance += (math.sqrt((x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2)) * 100
 
         flipped_image = cv2.flip(image, 1)
         flipped_image = cv2.cvtColor(flipped_image, cv2.COLOR_RGB2BGR)

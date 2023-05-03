@@ -1,30 +1,34 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
-public struct LandmarkInfo
-{
-	public Vector3 Position;
-	public float Visibility;
+public struct ServerChunk {
+	public float x;
+	public float y;
+	public float z;
+	public int point;
 }
 
 struct ServerData
 {
 	public float[] data;
 
-	public LandmarkInfo[] ParseLandmarks()
+	public ServerChunk[] ParseLandmarks()
     {
-		if (data.Length % 3 != 0) throw new InvalidOperationException("Invalid server data!");
-		LandmarkInfo[] info = new LandmarkInfo[data.Length / 3];
-		for (int i = 0; i < data.Length; i+=3)
+		if (data.Length % 4 != 0) throw new InvalidOperationException("Invalid server data!");
+		ServerChunk[] info = new ServerChunk[data.Length / 4];
+		for (int i = 0; i < data.Length; i+=4)
         {
-			info[i / 3].Position = new Vector3(data[i], data[i + 1], data[i + 2]);
-        }
+			info[i / 4].x = data[i];
+			info[i / 4].y = data[i + 1];
+			info[i / 4].z = data[i + 2];
+			info[i / 4].point = ((int)data[i + 3]);
+
+		}
 
 		return info;
     }
@@ -46,7 +50,7 @@ public class TCPTestClient : MonoBehaviour {
 
 	#endregion
 
-	public LandmarkInfo[] Landmarks;
+	public ServerChunk[] Landmarks;
 
 	
 
