@@ -41,8 +41,7 @@ public class LandmarkVisualizer : MonoBehaviour
         {
             foreach (var l in _client.Landmarks)
             {
-                _Finger.transform.position = new Vector3(l.x, l.y, l.z) * _scale;
-                print(handPoints[l.point]);
+                print(l.Distance);
             }
         }
     }
