@@ -1,7 +1,1 @@
-# My Just Dance
-  Copy of Just Dance created with Google MediaPipe.
-  The project is written in python using the cv2 and mediapipe libraries.
-  
-  While working on this project, I learned how to work with mediapipe and cv2. In the future, I will port the project to unity for VR (Virtual Reality), and make it a full-fledged social network.
-
-  For the project to work, you need to install python no higher than 3.9.
+My application is designed to assist individuals with musculoskeletal injuries in their recovery process. Users can upload their own exercise videos and utilize the built-in calendar feature to track and record their exercise repetitions accurately. The calendar allows users to monitor their progress and maintain a log of their exercise sessions. While my application focuses on providing a platform for users to organize their exercise videos and track their daily exercise routines, it does not offer automated feedback or monitoring of exercise performance.
